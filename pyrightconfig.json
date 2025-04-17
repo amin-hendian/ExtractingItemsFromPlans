@@ -1,0 +1,21 @@
+{
+  "include": [
+    "."
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/migrations",
+    "**/.venv"
+  ],
+  "ignore": [],
+  "defineConstant": {},
+  "stubPath": "",
+  "venv": ".venv",
+  "venvPath": ".",
+  "reportMissingImports": true,
+  "reportMissingTypeStubs": true,
+  "pythonVersion": "3.12",
+  "pythonPlatform": "Linux",
+  "typeCheckingMode": "standard"
+}
