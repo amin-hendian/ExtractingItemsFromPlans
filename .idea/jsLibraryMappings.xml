@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <excludedPredefinedLibrary name="source_direct/.venv/lib/python3.12/site-packages/nodejs_wheel/lib/node_modules" />
+    <excludedPredefinedLibrary name="source_direct/.venv/lib64/python3.12/site-packages/nodejs_wheel/lib/node_modules" />
+  </component>
+</project>
