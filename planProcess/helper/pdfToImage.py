@@ -9,46 +9,49 @@ from pdf2image import convert_from_path
 class Decoded:
     def __init__(self, pdf_file):
         self.pdf_file = pdf_file
-        self.pdf_file_name = self.pdf_file.strip(".pdf", "")
-        self.images_directory = ""
+        self.pdf_file_name = self.pdf_file.replace(".pdf", "")
+        self.directory = ""
         self.all_images = ""
-        self.all_encoded_images = []
+        self.all_decoded_images = []
         self.url_list = []
 
-        self.make_directory(self.pdf_file_name)
+        self.create_directory(self.pdf_file_name)
 
-        self.save_images()
+        self.create_images(self.pdf_file)
 
-        self.encode_images(self.all_images)
+        self.save_images(self.all_images)
 
-        self.delete_images(self.images_directory)
+        self.create_urls()
 
-    def make_directory(self, pdf_file_name):
+        self.delete_directory(self.directory)
+
+    def create_directory(self, pdf_file_name):
         try:
             os.mkdir(pdf_file_name)
         except FileExistsError:
             pass
-        self.images_directory = Path(pdf_file_name)
+        self.directory = Path(self.pdf_file_name)
 
-    def save_images(
-        self,
-    ):
-        self.all_images = convert_from_path(self.pdf_file)
-        for i, page in enumerate(self.all_images):
-            image_path = f"{self.pdf_file_name}/page{i + 1}.jpg"
-            page.save(image_path, "JPEG")
+    def create_images(self, pdf_file):
+        self.all_images = convert_from_path(pdf_file)
 
-    def encode_images(self, images):
-        for image in images:
-            encoded_image = base64.b64encode(open(image, "rb").read()).decode("utf-8")
-            self.all_encoded_images.append(encoded_image)
+    def save_images(self, images):
+        for i, page in enumerate(images):
+            image = f"{self.pdf_file_name}/page{i + 1}.jpg"
+            page.save(image, "JPEG")
+
+    def create_urls(self):
+        for image in self.directory.iterdir():
+            encoded_string = base64.b64encode(open(image, "rb").read()).decode("utf_8")
+            self.all_decoded_images.append(encoded_string)
+
         self.url_list = [
             {
                 "type": "image_url",
                 "image_url": {"url": f"data:image/jpeg;base64,{item}"},
             }
-            for item in self.all_encoded_images
+            for item in self.all_decoded_images
         ]
 
-    def delete_images(self, images_directory):
-        shutil.rmtree(images_directory)
+    def delete_directory(self, directory):
+        shutil.rmtree(directory)

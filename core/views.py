@@ -9,9 +9,8 @@ from .tasks import first_celery_task
 
 
 class PingApi(APIView):
-    @swagger_auto_schema(response={200: PingResultSerializer()})
-    def get(self, _: Request):
+    @swagger_auto_schema(responses={200: PingResultSerializer})
+    def get(self, request):
         data = PingResult(time=timezone.now())
         response = PingResultSerializer(instance=data)
-        first_celery_task.delay(20)
-        return JsonResponse(response, status=200)
+        return JsonResponse(response.data, status=200)
